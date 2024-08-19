@@ -9,13 +9,13 @@ public class TaskLockExample {
     private final Condition condition = lock.newCondition();
     private int counter = 1; // Initial value of the counter
 
-    public void method1() {
+    public void redLight() {
         lock.lock(); // Acquires the lock
         try {
             while (counter != 1) {
                 condition.await(); // Waits until the counter becomes 1
             }
-            System.out.println("method1 run");
+            System.out.println("red light");
             counter++; // Increments the counter
             condition.signalAll(); // Notifies other threads that method1 has completed
         } catch (InterruptedException e) {
@@ -25,13 +25,13 @@ public class TaskLockExample {
         }
     }
 
-    public void method2() throws InterruptedException {
+    public void yellowLight() throws InterruptedException {
         lock.lock(); // Acquires the lock
         try {
             while (counter != 2) {
                 condition.await(); // Waits until the counter becomes 2
             }
-            System.out.println("method2 run");
+            System.out.println("yellow light");
             counter++; // Increments the counter
             condition.signalAll(); // Notifies other threads that method2 has completed
         } finally {
@@ -39,13 +39,13 @@ public class TaskLockExample {
         }
     }
 
-    public void method3() throws InterruptedException {
+    public void greenLight() throws InterruptedException {
         lock.lock(); // Acquires the lock
         try {
             while (counter != 3) {
                 condition.await(); // Waits until the counter becomes 3
             }
-            System.out.println("method3 run");
+            System.out.println("green light");
             // No need to increment the counter or notify other threads
         } finally {
             lock.unlock(); // Releases the lock
